@@ -117,3 +117,28 @@ class Methods(Matrix):
         }
         return summary
 
+
+    def data():
+    df = pd.DataFrame(columns=['method', 'dimension',  'result', 'n_iter', 'run_time', 'norm_inf'])
+    Dimen = [10**t for t in range(1,6)] 
+    tol = 1e-6  
+    for D in Dimen:
+        solution = Methods(tol, D)
+        jac = solution.jacobi()
+        g_seidel = solution.gauss_seidel()
+        cg = solution.conjugate_gradient(min(jac['n_iter'],g_seidel['n_iter']))
+
+
+        def mergeDictionary(dict_1, dict_2, dict_3):
+            dict_4 = {**dict_1, **dict_2, **dict_3}
+            for key, value in dict_3.items():
+                dict_4[key] = [value , dict_1[key], dict_2[key]]
+            return dict_4
+    
+        df = pd.concat([df, pd.DataFrame(mergeDictionary(jac, g_seidel, cg))])
+    
+    return df.reset_index(drop=True)
+
+
+if __name__ == '__main__':   
+    df = data()
