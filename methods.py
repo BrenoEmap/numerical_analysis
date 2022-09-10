@@ -118,7 +118,7 @@ class Methods(Matrix):
         return summary
 
 
-    def data():
+def data():
     df = pd.DataFrame(columns=['method', 'dimension',  'result', 'n_iter', 'run_time', 'norm_inf'])
     Dimen = [10**t for t in range(1,6)] 
     tol = 1e-6  
@@ -134,9 +134,9 @@ class Methods(Matrix):
             for key, value in dict_3.items():
                 dict_4[key] = [value , dict_1[key], dict_2[key]]
             return dict_4
-    
+
         df = pd.concat([df, pd.DataFrame(mergeDictionary(jac, g_seidel, cg))])
-    
+
     return df.reset_index(drop=True)
 
 
